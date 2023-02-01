@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./SwapWidget.css";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import Flex from "../Flex";
 import * as Switch from "@radix-ui/react-switch";
 import { Combobox } from "@headlessui/react";
 import OptionsPane from "./OptionsPane";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { theme } from "../../utils/theme";
 
 const Body = styled.div<{ showRoutes: boolean }>`
   position: relative;
@@ -42,7 +43,9 @@ const OverlayBody = styled(Body)`
   left: 0;
   right: 0;
   bottom: 0;
+  background: #fff;
   z-index: 1;
+  box-shadow: none;
 `;
 
 const Wrapper = styled.div`
@@ -257,61 +260,63 @@ const SwapWidget = ({ label }: SwapWidgetProps) => {
         });
 
   return (
-    <BodyWrapper>
-      <Body showRoutes={false}>
-        <FormHeader>
-          <Flex>
-            <div>Chain</div>
-            <div
-              style={{
-                flexGrow: 1,
-              }}
-            />
-            {/* <Tooltip>
+    <ThemeProvider theme={theme("light")}>
+      <BodyWrapper>
+        <Body showRoutes={false}>
+          <FormHeader>
+            <Flex>
+              <div>Chain</div>
+              <div
+                style={{
+                  flexGrow: 1,
+                }}
+              />
+              {/* <Tooltip>
               Redirect requests through the DefiLlama Server to hide your IP
               address
             </Tooltip> */}
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <div>Hide IP</div>
-              <SwitchRoot>
-                <SwitchThumb />
-              </SwitchRoot>
-            </div>
-          </Flex>
-        </FormHeader>
-        <Combobox value={selectedChain} onChange={setSelectedChain}>
-          <ComboboxInput
-            onChange={(event: any) => setQuery(event.target.value)}
-          />
-        </Combobox>
-        <SelectWrapper>
-          <FormHeader>Select Tokens</FormHeader>
-          <TokenSelectBody>
-            <Combobox value={selectedChain} onChange={setSelectedChain}>
-              <ComboboxInput
-                onChange={(event: any) => setQuery(event.target.value)}
-              />
-            </Combobox>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ArrowRight size={16} />
-            </div>
-            <Combobox value={selectedChain} onChange={setSelectedChain}>
-              <ComboboxInput
-                onChange={(event: any) => setQuery(event.target.value)}
-              />
-              {filteredChain && (
-                <OverlayBody showRoutes={false}>
-                  <OptionsPane filteredValues={filteredChain} />
-                </OverlayBody>
-              )}
-            </Combobox>
-            {/* <TokenSelect
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div>Hide IP</div>
+                <SwitchRoot>
+                  <SwitchThumb />
+                </SwitchRoot>
+              </div>
+            </Flex>
+          </FormHeader>
+          <Combobox value={selectedChain} onChange={setSelectedChain}>
+            <ComboboxInput
+              onChange={(event: any) => setQuery(event.target.value)}
+            />
+          </Combobox>
+          <SelectWrapper>
+            <FormHeader>Select Tokens</FormHeader>
+            <TokenSelectBody>
+              <Combobox value={selectedChain} onChange={setSelectedChain}>
+                <ComboboxInput
+                  onChange={(event: any) => setQuery(event.target.value)}
+                />
+              </Combobox>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ArrowRight size={16} />
+              </div>
+              <Combobox value={selectedChain} onChange={setSelectedChain}>
+                <ComboboxInput
+                  onChange={(event: any) => setQuery(event.target.value)}
+                />
+                {filteredChain && (
+                  <OverlayBody showRoutes={false}>
+                    <ArrowLeft size={16} />
+                    <OptionsPane filteredValues={filteredChain} />
+                  </OverlayBody>
+                )}
+              </Combobox>
+              {/* <TokenSelect
               tokens={tokensInChain.filter(
                 ({ address }) => address !== finalSelectedToToken?.address
               )}
@@ -319,10 +324,11 @@ const SwapWidget = ({ label }: SwapWidgetProps) => {
               onClick={onFromTokenChange}
               selectedChain={selectedChain}
             /> */}
-          </TokenSelectBody>
-        </SelectWrapper>
-      </Body>
-    </BodyWrapper>
+            </TokenSelectBody>
+          </SelectWrapper>
+        </Body>
+      </BodyWrapper>
+    </ThemeProvider>
   );
 };
 
