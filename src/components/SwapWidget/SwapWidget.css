@@ -1,3 +1,10 @@
-button {
-  font-size: 60px;
+@import url("https://rsms.me/inter/inter.css");
+
+:root {
+  --font-inter: "Inter var", sans-serif;
 }
+
+html {
+  font-family: var(--font-inter);
+}
+

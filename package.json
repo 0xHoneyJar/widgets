@@ -16,7 +16,13 @@
   },
   "author": "zkSoju",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "@headlessui/react": "^1.7.8",
+    "@radix-ui/react-switch": "^1.0.1",
+    "lucide-react": "^0.108.0",
+    "react-select": "^5.7.0",
+    "styled-components": "^5.3.6"
+  },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
@@ -37,6 +43,7 @@
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.4.0",
     "@types/react": "^18.0.27",
+    "@types/styled-components": "^5.1.26",
     "babel-jest": "^29.4.1",
     "babel-loader": "^8.3.0",
     "identity-obj-proxy": "^3.0.0",
