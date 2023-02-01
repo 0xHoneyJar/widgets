@@ -5,13 +5,17 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 import Flex from "../Flex";
 import * as Switch from "@radix-ui/react-switch";
 import { Combobox } from "@headlessui/react";
+import OptionsPane from "./OptionsPane";
+import { ArrowRight } from "lucide-react";
 
 const Body = styled.div<{ showRoutes: boolean }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 16px;
   width: 100%;
+  min-height: 36rem;
   max-width: 30rem;
   border: 1px solid #2f333c;
   align-self: flex-start;
@@ -30,6 +34,15 @@ const Body = styled.div<{ showRoutes: boolean }>`
 
   border-radius: 16px;
   text-align: left;
+`;
+
+const OverlayBody = styled(Body)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 `;
 
 const Wrapper = styled.div`
@@ -126,11 +139,6 @@ const FormHeader = styled.div`
   font-size: 16px;
   margin-bottom: 4px;
   margin-left: 4px;
-  .chakra-switch,
-  .chakra-switch__track,
-  .chakra-switch__thumb {
-    height: 10px;
-  }
 `;
 
 const SelectWrapper = styled.div`
@@ -211,12 +219,21 @@ const SwitchThumb = styled(Switch.Thumb)`
   }
 `;
 
+const ComboboxInput = styled(Combobox.Input)`
+  border: 1px solid #2f333c;
+  border-radius: 16px;
+  background-color: #2f333c;
+  outline: none;
+  padding: 16px;
+  color: #fff;
+`;
+
 const chain = [
-  "Durward Reynolds",
-  "Kenton Towne",
-  "Therese Wunsch",
-  "Benedict Kessler",
-  "Katelyn Rohan",
+  "Ethereum",
+  "Binance Smart Chain",
+  "Polygon",
+  "Avalanche",
+  "Fantom",
 ];
 
 export interface SwapWidgetProps {
@@ -255,31 +272,55 @@ const SwapWidget = ({ label }: SwapWidgetProps) => {
               address
             </Tooltip> */}
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <p>Hide IP</p>
+              <div>Hide IP</div>
               <SwitchRoot>
                 <SwitchThumb />
               </SwitchRoot>
             </div>
           </Flex>
         </FormHeader>
-        <Combobox
-          as={"div"}
-          style={{ position: "relative" }}
-          value={selectedChain}
-          onChange={setSelectedChain}
-        >
-          <Combobox.Input
-            style={{ width: "100%", boxSizing: "border-box" }}
-            onChange={(event) => setQuery(event.target.value)}
+        <Combobox value={selectedChain} onChange={setSelectedChain}>
+          <ComboboxInput
+            onChange={(event: any) => setQuery(event.target.value)}
           />
-          <Combobox.Options style={{ position: "absolute", top: 0 }}>
-            {filteredChain.map((chain) => (
-              <Combobox.Option key={chain} value={chain}>
-                {chain}
-              </Combobox.Option>
-            ))}
-          </Combobox.Options>
         </Combobox>
+        <SelectWrapper>
+          <FormHeader>Select Tokens</FormHeader>
+          <TokenSelectBody>
+            <Combobox value={selectedChain} onChange={setSelectedChain}>
+              <ComboboxInput
+                onChange={(event: any) => setQuery(event.target.value)}
+              />
+            </Combobox>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ArrowRight size={16} />
+            </div>
+            <Combobox value={selectedChain} onChange={setSelectedChain}>
+              <ComboboxInput
+                onChange={(event: any) => setQuery(event.target.value)}
+              />
+              {filteredChain && (
+                <OverlayBody showRoutes={false}>
+                  <OptionsPane filteredValues={filteredChain} />
+                </OverlayBody>
+              )}
+            </Combobox>
+            {/* <TokenSelect
+              tokens={tokensInChain.filter(
+                ({ address }) => address !== finalSelectedToToken?.address
+              )}
+              token={finalSelectedFromToken}
+              onClick={onFromTokenChange}
+              selectedChain={selectedChain}
+            /> */}
+          </TokenSelectBody>
+        </SelectWrapper>
       </Body>
     </BodyWrapper>
   );
